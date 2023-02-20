@@ -13,5 +13,5 @@ func main() {
 	usersList = users.Register(ApiUrl, usersList, 10)
 	time.Sleep(3 * time.Second)
 	usersList = users.Login(ApiUrl, usersList)
-	users.AddStats(ApiUrl, usersList, true)
+	users.AddStats(ApiUrl, usersList, false)
 }

@@ -1,0 +1,5 @@
+package quest
+
+func AcceptQuest() {
+
+}
