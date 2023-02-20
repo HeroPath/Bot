@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func Register(users []models.User, amountUsers int) []models.User {
+func Register(ApiUrl string, users []models.User, amountUsers int) []models.User {
 	for i := 0; i < amountUsers; i++ {
 		var password = randomString(8)
 		var userRegister models.UserRegister
@@ -18,7 +18,7 @@ func Register(users []models.User, amountUsers int) []models.User {
 		userRegister.Password = password
 		data, _ := json.Marshal(userRegister)
 
-		resp, _ := http.Post("http://localhost:8000/api/v1/auth/register", "application/json", bytes.NewBuffer(data))
+		resp, _ := http.Post(ApiUrl+"auth/register", "application/json", bytes.NewBuffer(data))
 		defer resp.Body.Close()
 
 		decoder := json.NewDecoder(resp.Body)
