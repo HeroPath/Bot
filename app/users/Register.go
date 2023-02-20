@@ -12,9 +12,10 @@ import (
 
 func Register(users []models.User, amountUsers int) []models.User {
 	for i := 0; i < amountUsers; i++ {
+		var password = randomString(8)
 		var userRegister models.UserRegister
 		faker.FakeData(&userRegister)
-		userRegister.Password = randomString(8)
+		userRegister.Password = password
 		data, _ := json.Marshal(userRegister)
 
 		resp, _ := http.Post("http://localhost:8000/api/v1/auth/register", "application/json", bytes.NewBuffer(data))
@@ -24,6 +25,7 @@ func Register(users []models.User, amountUsers int) []models.User {
 		var user models.User
 		decoder.Decode(&user)
 		user.Token = "none"
+		user.Password = password
 		users = append(users, user)
 	}
 	return users

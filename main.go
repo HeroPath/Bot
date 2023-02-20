@@ -8,7 +8,8 @@ import (
 
 func main() {
 	var usersList []models.User
-	usersList = users.Register(usersList, 10)
+	usersList = users.Register(usersList, 3)
 	time.Sleep(3 * time.Second)
+	usersList = users.Login(usersList)
 
 }
