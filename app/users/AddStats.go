@@ -6,26 +6,49 @@ import (
 	"net/http"
 )
 
-func AddStats(ApiUrl string, usersList []models.User) {
+func AddStats(ApiUrl string, usersList []models.User, assortment bool) {
 	for _, user := range usersList {
 		if user.FreeSkillPoints > 0 {
-			var urlAclass string
+			var mainStat string
+			secondaryStat := "vitality"
+			tertiaryStat := "luck"
 			switch user.AClass {
 			case "mage":
-				urlAclass = "intelligence"
+				mainStat = "intelligence"
 			case "warrior":
-				urlAclass = "strength"
+				mainStat = "strength"
 			case "archer":
-				urlAclass = "dexterity"
+				mainStat = "dexterity"
 			}
 
-			req, _ := http.NewRequest("POST", ApiUrl+"users/add-skill-points/"+urlAclass, bytes.NewBuffer([]byte("")))
+			req, _ := http.NewRequest("POST", ApiUrl+"users/add-skill-points/"+mainStat, bytes.NewBuffer([]byte("")))
 			req.Header.Set("Authorization", "Bearer "+user.Token)
 			req.Header.Set("Content-Type", "application/json")
 			client := &http.Client{}
-			for i := 0; i < user.FreeSkillPoints; i++ {
-				resp, _ := client.Do(req)
-				defer resp.Body.Close()
+
+			if !assortment {
+				for i := 0; i < user.FreeSkillPoints; i++ {
+					resp, _ := client.Do(req)
+					defer resp.Body.Close()
+				}
+			} else {
+				for i := 0; i < user.FreeSkillPoints; i++ {
+					if i%3 == 0 {
+						req, _ = http.NewRequest("POST", ApiUrl+"users/add-skill-points/"+mainStat, bytes.NewBuffer([]byte("")))
+						req.Header.Set("Authorization", "Bearer "+user.Token)
+						req.Header.Set("Content-Type", "application/json")
+					} else if i%3 == 1 {
+						req, _ = http.NewRequest("POST", ApiUrl+"users/add-skill-points/"+secondaryStat, bytes.NewBuffer([]byte("")))
+						req.Header.Set("Authorization", "Bearer "+user.Token)
+						req.Header.Set("Content-Type", "application/json")
+					} else {
+						req, _ = http.NewRequest("POST", ApiUrl+"users/add-skill-points/"+tertiaryStat, bytes.NewBuffer([]byte("")))
+						req.Header.Set("Authorization", "Bearer "+user.Token)
+						req.Header.Set("Content-Type", "application/json")
+					}
+					resp, _ := client.Do(req)
+					defer resp.Body.Close()
+				}
 			}
 		}
 	}
