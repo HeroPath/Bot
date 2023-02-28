@@ -3,14 +3,24 @@ package main
 import (
 	"aoweb-bot/app/models"
 	"aoweb-bot/app/users"
+	"github.com/joho/godotenv"
+	"log"
+	"os"
+	"strconv"
 	"time"
 )
 
-const ApiUrl = "http://localhost:8000/api/v1/"
-
 func main() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+
+	ApiUrl := os.Getenv("API_URL")
+	amountUsers, err := strconv.Atoi(os.Getenv("AMOUNT_USERS_TO_REGISTER"))
+
 	var usersList []models.User
-	usersList = users.Register(ApiUrl, usersList, 10)
+	usersList = users.Register(ApiUrl, usersList, amountUsers)
 	time.Sleep(3 * time.Second)
 	usersList = users.Login(ApiUrl, usersList)
 	users.AddStats(ApiUrl, usersList, false)
