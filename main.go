@@ -30,6 +30,7 @@ func main() {
 
 	if attackNpcs {
 		npc.AttackNPC(ApiUrl, usersList)
+
 	}
 
 }
