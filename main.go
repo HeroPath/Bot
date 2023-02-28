@@ -18,10 +18,11 @@ func main() {
 
 	ApiUrl := os.Getenv("API_URL")
 	amountUsers, err := strconv.Atoi(os.Getenv("AMOUNT_USERS_TO_REGISTER"))
+	addInitialStatsRandom, err := strconv.ParseBool(os.Getenv("ADD_INITIAL_STATS_RANDOM"))
 
 	var usersList []models.User
 	usersList = users.Register(ApiUrl, usersList, amountUsers)
 	time.Sleep(3 * time.Second)
 	usersList = users.Login(ApiUrl, usersList)
-	users.AddStats(ApiUrl, usersList, false)
+	users.AddStats(ApiUrl, usersList, addInitialStatsRandom)
 }
