@@ -11,7 +11,7 @@ type LoginResponse struct {
 	Token string `json:"token"`
 }
 
-func Login(users []models.User) []models.User {
+func Login(ApiUrl string, users []models.User) []models.User {
 	for i, user := range users {
 		if user.Token == "none" {
 			var userLogin models.UserLogin
@@ -19,7 +19,7 @@ func Login(users []models.User) []models.User {
 			userLogin.Password = user.Password
 			data, _ := json.Marshal(userLogin)
 
-			resp, _ := http.Post("http://localhost:8000/api/v1/auth/login", "application/json", bytes.NewBuffer(data))
+			resp, _ := http.Post(ApiUrl+"auth/login", "application/json", bytes.NewBuffer(data))
 			defer resp.Body.Close()
 
 			decoder := json.NewDecoder(resp.Body)
