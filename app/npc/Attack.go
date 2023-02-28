@@ -4,7 +4,6 @@ import (
 	"aoweb-bot/app/models"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -41,7 +40,6 @@ func AttackNPC(ApiUrl string, users []models.User, initialNpc bool) {
 			data["name"] = npc.Name
 		}
 		jsonData, _ := json.Marshal(data)
-		fmt.Println(string(jsonData))
 		req, _ := http.NewRequest("POST", ApiUrl+"users/attack-npc", bytes.NewBuffer(jsonData))
 		req.Header.Set("Authorization", "Bearer "+users[i].Token)
 		req.Header.Set("Content-Type", "application/json")
