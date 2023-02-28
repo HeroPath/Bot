@@ -4,6 +4,7 @@ import (
 	"aoweb-bot/app/models"
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -21,14 +22,26 @@ func getListNpcs(ApiUrl string, token string) []models.Npc {
 	return npcList
 }
 
-func AttackNPC(ApiUrl string, users []models.User) {
+func AttackNPC(ApiUrl string, users []models.User, initialNpc bool) {
 	for i := 0; i < len(users); i++ {
 		var npcList = getListNpcs(ApiUrl, users[i].Token)
-		data := map[string]interface{}{
-			"name": npcList[0].Name,
+		var data = map[string]interface{}{
+			"name": "",
+		}
+		if initialNpc {
+			data["name"] = npcList[0].Name
+		} else {
+			userLevel := users[i].Level
+			var npc models.Npc
+			for _, val := range npcList {
+				if userLevel >= val.Level {
+					npc = val
+				}
+			}
+			data["name"] = npc.Name
 		}
 		jsonData, _ := json.Marshal(data)
-
+		fmt.Println(string(jsonData))
 		req, _ := http.NewRequest("POST", ApiUrl+"users/attack-npc", bytes.NewBuffer(jsonData))
 		req.Header.Set("Authorization", "Bearer "+users[i].Token)
 		req.Header.Set("Content-Type", "application/json")

@@ -28,9 +28,20 @@ func main() {
 	usersList = users.Login(ApiUrl, usersList)
 	users.AddStats(ApiUrl, usersList, addInitialStatsRandom)
 
-	if attackNpcs {
-		npc.AttackNPC(ApiUrl, usersList)
+	userActing(ApiUrl, usersList, attackNpcs, 500)
 
+}
+
+func userActing(ApiUrl string, usersList []models.User, attackNpc bool, repetitions int) {
+	if attackNpc {
+		npc.AttackNPC(ApiUrl, usersList, true)
+		usersList = users.GetProfile(ApiUrl, usersList)
+		users.AddStats(ApiUrl, usersList, false)
+
+		for i := 0; i < repetitions; i++ {
+			npc.AttackNPC(ApiUrl, usersList, false)
+			usersList = users.GetProfile(ApiUrl, usersList)
+		}
 	}
 
 }
