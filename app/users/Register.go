@@ -1,10 +1,9 @@
 package users
 
 import (
-	"aoweb-bot/app/models"
+	"Bot/app/models"
 	"bytes"
 	"encoding/json"
-	"github.com/bxcodec/faker/v4"
 	"math/rand"
 	"net/http"
 	"time"

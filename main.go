@@ -1,9 +1,9 @@
 package main
 
 import (
-	"aoweb-bot/app/models"
-	"aoweb-bot/app/npc"
-	"aoweb-bot/app/users"
+	"Bot/app/models"
+	"Bot/app/npc"
+	"Bot/app/users"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
