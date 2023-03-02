@@ -1,7 +1,7 @@
 package users
 
 import (
-	"aoweb-bot/app/models"
+	"Bot/app/models"
 	"bytes"
 	"net/http"
 )

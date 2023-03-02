@@ -1,7 +1,7 @@
 package npc
 
 import (
-	"aoweb-bot/app/models"
+	"Bot/app/models"
 	"bytes"
 	"encoding/json"
 	"net/http"
@@ -9,6 +9,7 @@ import (
 
 func getListNpcs(ApiUrl string, token string) []models.Npc {
 	var npcList []models.Npc
+
 	req, _ := http.NewRequest("GET", ApiUrl+"npcs/zone/forest", bytes.NewBuffer([]byte("")))
 	req.Header.Set("Authorization", "Bearer "+token)
 	req.Header.Set("Content-Type", "application/json")
